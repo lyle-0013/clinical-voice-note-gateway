@@ -1,0 +1,15 @@
+{
+  "name": "clinical-voice-note-gateway",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "voice-note": "tsx src/clinical-voice-note.ts",
+    "test": "tsx --test src/clinical-voice-note.test.ts"
+  },
+  "dependencies": {
+    "openai": "^4.0.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.0.0"
+  }
+}

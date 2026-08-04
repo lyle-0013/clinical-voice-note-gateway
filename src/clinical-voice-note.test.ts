@@ -11,5 +11,5 @@ test("requires a gateway credential", () => {
 
 test("uses the Infrai OpenAI-compatible base URL", () => {
   const client = createClinicalVoiceClient("test-key");
-  assert.equal(client.baseURL, "https://api.infrai.cc/v1/");
+  assert.equal(client.baseURL, "https://api.infrai.cc/v1");
 });

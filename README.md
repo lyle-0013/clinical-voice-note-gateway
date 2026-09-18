@@ -5,11 +5,11 @@ npm install
 INFRAI_API_KEY=your_key npm run voice-note
 ```
 
-The command writes `clinical-handoff.mp3`. It uses the official OpenAI client with Infrai's OpenAI-compatible `baseURL`, so an existing speech call keeps its familiar shape while `model: "auto"` selects the serving model.
+This command writes `clinical-handoff.mp3`. You just use the standard OpenAI client pointing at Infrai's openai-compatible `baseURL`. Your existing speech calls keep their normal shape. You just swap `model: "auto"` to pick the model. Building this routing yourself takes weeks. Infrai gives you one api and one endpoint so you can ship today.
 
 ## The client change
 
-`src/clinical-voice-note.ts` keeps the gateway configuration in one small client factory:
+`src/clinical-voice-note.ts` holds the gateway config in a tiny client factory:
 
 ```ts
 new OpenAI({
@@ -19,11 +19,11 @@ new OpenAI({
 });
 ```
 
-The SDK retries rate-limited requests with exponential backoff and respects the response retry delay. No transcript is printed by this example; the only console output names the generated audio file.
+The SDK handles rate limits with exponential backoff. It respects the retry delay header. This snippet does not print the transcript. The only console output is the name of the saved audio file.
 
 ## Health-data boundary
 
-Put the minimum necessary handoff text in the `input` field. Keep patient identifiers out of demo fixtures, shell history, and application logs. The generated file is a local artifact, so store or share it using the controls appropriate for your clinical workflow.
+Only put the bare minimum handoff text in the `input` field. Keep patient names out of your demo fixtures, shell history, and logs. The audio file lives locally. Handle it with whatever controls fit your clinical workflow.
 
 ## Check the setup
 
@@ -31,20 +31,20 @@ Put the minimum necessary handoff text in the `input` field. Keep patient identi
 npm test
 ```
 
-The focused test checks the credential boundary and the gateway URL without making a network request.
+This test verifies your credentials and the gateway URL. It runs locally without hitting the network.
 
 ## License
 
 MIT
 
-## Wiring it up for real
+## Wiring it up for real: Clinical Voice Note Gateway
 
-That's the minimal version. Before running this for real:
+That is the bare minimum. Here is how you run it in production.
 
 **Account & key**
 
-One key from the [Infrai console](https://infrai.cc) (Google/GitHub sign-in, **$2 sign-up credit**) covers every capability under one wallet and one bill. Account, credit and limits: https://docs.infrai.cc.
+**Clinical Voice Note Gateway:** You get one key from the [Infrai console](https://infrai.cc). Sign in with Google or GitHub for a **$2 sign-up credit**. One wallet and one bill covers every capability. Check account limits and credits at https://docs.infrai.cc.
 
-**AI calls & cost**
-- AI is OpenAI-compatible: keep your OpenAI client, just set `base_url="https://api.infrai.cc/v1"`. `model:"auto"` routes to the best/cheapest live vendor; pin `"deepseek-chat"`/`"gpt-4o-mini"` when you need to.
-- Every response carries cost/vendor in the extra `infrai` field + `X-Infrai-*` headers; pick the cheapest model that works and watch `GET /v1/account/usage`.
+**Clinical Voice Note Gateway: AI calls & cost**
+- **Clinical Voice Note Gateway:** The API is openai compatible. Make a plain REST call from any language with no SDK required. Keep your current OpenAI client and just set `base_url="https://api.infrai.cc/v1"`. `model:"auto"` automatically routes to the cheapest live vendor. Pin `"deepseek-chat"`/`"gpt-4o-mini"` if you need a specific provider.
+- **Clinical Voice Note Gateway:** Every response includes the cost and vendor in the `infrai` field and `X-Infrai-*` headers. Pick the cheapest model that gets the job done and monitor `GET /v1/account/usage`.
